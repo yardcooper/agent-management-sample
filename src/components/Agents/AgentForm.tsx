@@ -1,59 +1,90 @@
 import React from 'react'
+import { Form, Input, Button } from 'antd'
+import TextArea from 'antd/es/input/TextArea'
+import axios from '../../utils'
+interface FormDataProps {
+  firstName: string
+  lastName: string
+  address: string
+  agentLicence: string
+  practiceAreas: string
+  aboutMe: string
+  photoUrl: string
+}
 
 const AgentForm: React.FC = () => {
+  const handleFinish = (values: FormDataProps) => {
+    axios.post('/agents', { ...values }).then((res) => {
+      console.log(res)
+    })
+  }
+
   return (
     <div>
-      <form action="">
-        <label htmlFor="first-name">First Name:</label>
-        <input
-          type="text"
-          name="first-name"
-          id="first-name"
-        />
-
-        <label htmlFor="last-name">Last Name:</label>
-        <input
-          type="text"
-          name="last-name"
-          id="last-name"
-        />
-
-        <label htmlFor="photo-url">Photo Url:</label>
-        <input
-          type="text"
-          name="photo-url"
-          id="photo-url"
-        />
-
-        <label htmlFor="agent-licence">Agent Licence:</label>
-        <input
-          type="text"
-          name="agent-licence"
-          id="agent-licence"
-        />
-
-        <label htmlFor="address">Address:</label>
-        <input
-          type="text"
+      <Form
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 14 }}
+        layout="horizontal"
+        labelWrap
+        colon={false}
+        style={{ maxWidth: 800 }}
+        onFinish={handleFinish}
+      >
+        <Form.Item
+          name="firstName"
+          label="First Name"
+          rules={[{ required: true }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="lastName"
+          label="Last Name"
+          rules={[{ required: true }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="photoUrl"
+          label="Photo Url"
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="agentLicence"
+          label="Agent Licence"
+          rules={[{ required: true }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
           name="address"
-          id="address"
-        />
-
-        <label htmlFor="practice-areas">Practice Areas:</label>
-        <input
-          type="text"
-          name="practice-areas"
-          id="practice-ares"
-        />
-
-        <label htmlFor="about-me">About Me:</label>
-        <textarea
-          name="about-me"
-          id="about-me"
-          cols={30}
-          rows={10}
-        ></textarea>
-      </form>
+          label="Address"
+          rules={[{ required: true }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="practiceAreas"
+          label="Practice Areas"
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="aboutMe"
+          label="About Me"
+        >
+          <TextArea />
+        </Form.Item>
+        <Form.Item label=" ">
+          <Button
+            type="primary"
+            htmlType="submit"
+          >
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   )
 }

@@ -2,11 +2,10 @@ import type { FC } from 'react'
 import { useState, useEffect } from 'react'
 import Agent from './Agent'
 import { IAgent } from '../../types/Agent'
-import axios from 'axios'
+import axios from '../../utils'
 import './Agents.css'
 import AgentForm from './AgentForm'
-
-axios.defaults.baseURL = 'http://localhost:3001'
+import { Row, Col } from 'antd'
 
 const Agents: FC = () => {
   const [agents, setAgents] = useState<IAgent[]>([])
@@ -25,15 +24,25 @@ const Agents: FC = () => {
   }
 
   return (
-    <div className="agents">
-      {agents.map((agent) => (
-        <Agent
-          key={agent.id}
-          agent={agent}
-        />
-      ))}
+    <div>
+      <div className="agents">
+        {agents.map((agent) => (
+          <Agent
+            key={agent.id}
+            agent={agent}
+          />
+        ))}
+      </div>
       <button onClick={handleShowForm}>Join the team!</button>
-      {formVisible ? <AgentForm /> : ''}
+      {formVisible ? (
+        <Row justify={'center'}>
+          <Col span={20}>
+            <AgentForm />
+          </Col>
+        </Row>
+      ) : (
+        ''
+      )}
     </div>
   )
 }
