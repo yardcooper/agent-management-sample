@@ -1,16 +1,29 @@
-import type { FC } from "react";
-import { IAgent } from "../../types/Agent";
+import type { FC } from 'react'
+import { IAgent } from '../../types/Agent'
 
 import './Agent.css'
 
-const Agent: FC<{ agent: IAgent }> = ({ agent }) => {
+const Agent: FC<{ agent: IAgent; handleAgentDetail: Function }> = ({
+  agent,
+  handleAgentDetail,
+}) => {
+  const handleOnClick = () => {
+    handleAgentDetail(agent.id)
+  }
   return (
-    <div className="container">
+    <div
+      className="container"
+      onClick={handleOnClick}
+    >
       <header>
         <div className="avatar-holder">
-          <img src={agent.photoUrl} className="avatar" alt={agent.firstName} />
+          <img
+            src={agent.photoUrl}
+            className="avatar"
+            alt={agent.firstName}
+          />
         </div>
-        <h2 className="agent-name">{agent.firstName + " " + agent.lastName}</h2>
+        <h2 className="agent-name">{agent.firstName + ' ' + agent.lastName}</h2>
       </header>
       <div className="body">{agent.aboutMe}</div>
       <footer>
@@ -24,7 +37,7 @@ const Agent: FC<{ agent: IAgent }> = ({ agent }) => {
         </div>
       </footer>
     </div>
-  );
-};
+  )
+}
 
-export default Agent;
+export default Agent

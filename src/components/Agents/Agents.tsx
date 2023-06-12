@@ -1,17 +1,24 @@
 import type { FC } from 'react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Agent from './Agent'
 import { IAgent } from '../../types/Agent'
 import axios from '../../utils'
 import './Agents.css'
-import { Row, Col, Button } from 'antd'
+import { Row, Col, Button, Modal } from 'antd'
 
 import AgentForm from './AgentForm'
 import SearchForm from './SearchForm'
+import AgentDetailView from './AgentDetailView'
 
 const Agents: FC = () => {
   const [agents, setAgents] = useState<IAgent[]>([])
   const [formVisible, setFormVisible] = useState<boolean>(false)
+  const [selectedAgent, setSelectedAgent] = useState<string>('')
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const currentAgent = useMemo(() => {
+    return agents.filter((agent) => agent.id === selectedAgent)
+  }, [agents, selectedAgent])
 
   useEffect(() => {
     async function fetchInitialData() {
@@ -36,6 +43,19 @@ const Agents: FC = () => {
     })
   }
 
+  const handleAgentDetail = (agentId: string) => {
+    setSelectedAgent(agentId)
+    setIsModalOpen(true)
+  }
+
+  const handleOk = () => {
+    setIsModalOpen(false)
+  }
+
+  const handleCancel = () => {
+    setIsModalOpen(false)
+  }
+
   return (
     <div>
       <Button
@@ -55,15 +75,29 @@ const Agents: FC = () => {
       ) : (
         ''
       )}
-      <div className="agents">
+      {/* <div className="agents"> */}
+      <Row>
         {agents.map((agent) => (
-          <Agent
-            key={agent.id}
-            agent={agent}
-          />
+          <Col span={6}>
+            <Agent
+              key={agent.id}
+              agent={agent}
+              handleAgentDetail={handleAgentDetail}
+            />
+          </Col>
         ))}
-      </div>
+      </Row>
+
+      <Modal
+        title="Basic Modal"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <AgentDetailView currentAgent={currentAgent} />
+      </Modal>
     </div>
+    // </div>
   )
 }
 
