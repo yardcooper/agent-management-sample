@@ -13,6 +13,18 @@ app.use(bodyParser.json())
 app.use(cors())
 
 app.get('/agents', async (req, res, next) => {
+  console.log(req.query)
+  if (req.query.search) {
+    const agents = (await Agent.findAll()).filter((agentItem) => {
+      return (
+        agentItem.practiceAreas
+          .toLowerCase()
+          .search(req.query.search.toLowerCase()) !== -1
+      )
+    })
+    return res.json(agents)
+  }
+
   const agents = await Agent.findAll()
   return res.json(agents)
 })

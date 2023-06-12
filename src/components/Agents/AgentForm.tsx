@@ -2,20 +2,16 @@ import React from 'react'
 import { Form, Input, Button } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import axios from '../../utils'
-interface FormDataProps {
-  firstName: string
-  lastName: string
-  address: string
-  agentLicence: string
-  practiceAreas: string
-  aboutMe: string
-  photoUrl: string
+import { IAgent } from '../../types/Agent'
+
+interface AgentFormProps {
+  handleSuccess: Function
 }
 
-const AgentForm: React.FC = () => {
-  const handleFinish = (values: FormDataProps) => {
-    axios.post('/agents', { ...values }).then((res) => {
-      console.log(res)
+const AgentForm: React.FC<AgentFormProps> = ({ handleSuccess }) => {
+  const handleFinish = (values: IAgent) => {
+    axios.post('/agents', { ...values }).then(({ data }) => {
+      handleSuccess(data)
     })
   }
 

@@ -4,8 +4,10 @@ import Agent from './Agent'
 import { IAgent } from '../../types/Agent'
 import axios from '../../utils'
 import './Agents.css'
+import { Row, Col, Button } from 'antd'
+
 import AgentForm from './AgentForm'
-import { Row, Col } from 'antd'
+import SearchForm from './SearchForm'
 
 const Agents: FC = () => {
   const [agents, setAgents] = useState<IAgent[]>([])
@@ -23,8 +25,36 @@ const Agents: FC = () => {
     setFormVisible(true)
   }
 
+  const handleSuccess = (newAgent: IAgent) => {
+    setAgents([...agents, newAgent])
+    setFormVisible(false)
+  }
+
+  const handleOnSearch = (search: string) => {
+    axios.get('/agents', { params: { search } }).then(({ data }) => {
+      setAgents([...data])
+    })
+  }
+
   return (
     <div>
+      <Button
+        type="link"
+        onClick={handleShowForm}
+      >
+        Join the team!
+      </Button>
+      <SearchForm handleOnSearch={handleOnSearch} />
+
+      {formVisible ? (
+        <Row justify={'center'}>
+          <Col span={20}>
+            <AgentForm handleSuccess={handleSuccess} />
+          </Col>
+        </Row>
+      ) : (
+        ''
+      )}
       <div className="agents">
         {agents.map((agent) => (
           <Agent
@@ -33,16 +63,6 @@ const Agents: FC = () => {
           />
         ))}
       </div>
-      <button onClick={handleShowForm}>Join the team!</button>
-      {formVisible ? (
-        <Row justify={'center'}>
-          <Col span={20}>
-            <AgentForm />
-          </Col>
-        </Row>
-      ) : (
-        ''
-      )}
     </div>
   )
 }
