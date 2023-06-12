@@ -6,6 +6,8 @@ import axios from 'axios'
 import './Agents.css'
 import AgentForm from './AgentForm'
 
+axios.defaults.baseURL = 'http://localhost:3001'
+
 const Agents: FC = () => {
   const [agents, setAgents] = useState<IAgent[]>([])
   const [formVisible, setFormVisible] = useState<boolean>(false)

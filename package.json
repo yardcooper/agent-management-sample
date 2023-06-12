@@ -7,6 +7,7 @@
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.1",
     "axios": "^1.4.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -46,7 +47,7 @@
     "nodemon": "^2.0.22"
   },
   "options": {
-    "allowedHosts":[
+    "allowedHosts": [
       "localhost",
       ".localhost"
     ],
